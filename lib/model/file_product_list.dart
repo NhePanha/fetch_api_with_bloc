@@ -1,137 +1,85 @@
+// To parse this JSON data, do
+//
+//     final productList = productListFromJson(jsonString);
+
 import 'dart:convert';
 
-List<ProductList> productListFromJson(String str) => List<ProductList>.from(json.decode(str).map((x) => ProductList.fromJson(x)));
+ProductList productListFromJson(String str) => ProductList.fromJson(json.decode(str));
 
-String productListToJson(List<ProductList> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String productListToJson(ProductList data) => json.encode(data.toJson());
 
 class ProductList {
-    int id;
-    String title;
-    String slug;
-    int price;
-    String description;
-    Category category;
-    List<String> images;
-    DateTime creationAt;
-    DateTime updatedAt;
+    int status;
+    String message;
+    List<Datum> data;
 
     ProductList({
-        required this.id,
-        required this.title,
-        required this.slug,
-        required this.price,
-        required this.description,
-        required this.category,
-        required this.images,
-        required this.creationAt,
-        required this.updatedAt,
+        required this.status,
+        required this.message,
+        required this.data,
     });
 
     factory ProductList.fromJson(Map<String, dynamic> json) => ProductList(
-        id: json["id"],
-        title: json["title"],
-        slug: json["slug"],
-        price: json["price"],
-        description: json["description"],
-        category: Category.fromJson(json["category"]),
-        images: List<String>.from(json["images"].map((x) => x)),
-        creationAt: DateTime.parse(json["creationAt"]),
-        updatedAt: DateTime.parse(json["updatedAt"]),
+        status: json["status"],
+        message: json["message"],
+        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
-        "id": id,
-        "title": title,
-        "slug": slug,
-        "price": price,
-        "description": description,
-        "category": category.toJson(),
-        "images": List<dynamic>.from(images.map((x) => x)),
-        "creationAt": creationAt.toIso8601String(),
-        "updatedAt": updatedAt.toIso8601String(),
+        "status": status,
+        "message": message,
+        "data": List<dynamic>.from(data.map((x) => x.toJson())),
     };
 }
 
-class Category {
+class Datum {
     int id;
-    Name name;
-    Slug slug;
+    String productName;
+    int qty;
+    String reqularPrice;
+    String salePrice;
     String image;
-    DateTime creationAt;
+    String description;
+    String category;
+    DateTime createdAt;
     DateTime updatedAt;
 
-    Category({
+    Datum({
         required this.id,
-        required this.name,
-        required this.slug,
+        required this.productName,
+        required this.qty,
+        required this.reqularPrice,
+        required this.salePrice,
         required this.image,
-        required this.creationAt,
+        required this.description,
+        required this.category,
+        required this.createdAt,
         required this.updatedAt,
     });
 
-    factory Category.fromJson(Map<String, dynamic> json) => Category(
+    factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         id: json["id"],
-        name: nameValues.map[json["name"]]!,
-        slug: slugValues.map[json["slug"]]!,
+        productName: json["product_name"],
+        qty: json["qty"],
+        reqularPrice: json["reqular_price"],
+        salePrice: json["sale_price"],
         image: json["image"],
-        creationAt: DateTime.parse(json["creationAt"]),
-        updatedAt: DateTime.parse(json["updatedAt"]),
+        description: json["description"],
+        category: json["category"],
+        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt: DateTime.parse(json["updated_at"]),
     );
 
     Map<String, dynamic> toJson() => {
         "id": id,
-        "name": nameValues.reverse[name],
-        "slug": slugValues.reverse[slug],
+        "product_name": productName,
+        "qty": qty,
+        "reqular_price": reqularPrice,
+        "sale_price": salePrice,
         "image": image,
-        "creationAt": creationAt.toIso8601String(),
-        "updatedAt": updatedAt.toIso8601String(),
+        "description": description,
+        "category": category,
+        "created_at": createdAt.toIso8601String(),
+        "updated_at": updatedAt.toIso8601String(),
     };
-}
-
-enum Name {
-    ELECTRONICS,
-    FURNITURE,
-    MISCELLANEOUS,
-    SHOES,
-    STRING,
-    UPDATED_CATEGORY_NAME
-}
-
-final nameValues = EnumValues({
-    "Electronics": Name.ELECTRONICS,
-    "Furniture": Name.FURNITURE,
-    "Miscellaneous": Name.MISCELLANEOUS,
-    "Shoes": Name.SHOES,
-    "string": Name.STRING,
-    "Updated Category Name": Name.UPDATED_CATEGORY_NAME
-});
-
-enum Slug {
-    ELECTRONICS,
-    FURNITURE,
-    MISCELLANEOUS,
-    SHOES,
-    STRING,
-    UPDATED_CATEGORY_NAME
-}
-
-final slugValues = EnumValues({
-    "electronics": Slug.ELECTRONICS,
-    "furniture": Slug.FURNITURE,
-    "miscellaneous": Slug.MISCELLANEOUS,
-    "shoes": Slug.SHOES,
-    "string": Slug.STRING,
-    "updated-category-name": Slug.UPDATED_CATEGORY_NAME
-});
-
-class EnumValues<T> {
-    Map<String, T> map;
-    late Map<T, String> reverseMap;
-
-    EnumValues(this.map);
-
-    Map<T, String> get reverse {
-            reverseMap = map.map((k, v) => MapEntry(v, k));
-            return reverseMap;
-    }
 }

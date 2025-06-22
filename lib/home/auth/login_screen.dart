@@ -1,0 +1,61 @@
+import 'package:auth_with_api/home/auth/signup_screen.dart';
+import 'package:auth_with_api/home/auth/widget/custom_buttom.dart';
+import 'package:auth_with_api/home/auth/widget/custom_textfield.dart';
+import 'package:auth_with_api/home/routes/main_sreen_file.dart';
+import 'package:flutter/material.dart';
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+class _LoginScreenState extends State<LoginScreen> {
+  TextEditingController username = TextEditingController();
+  TextEditingController password = TextEditingController();
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.only(left: 20,right: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center, 
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CustomTextfield(hin: "username", icons: Icons.email, controllers: username),
+            CustomTextfield(hin: "password", icons: Icons.email, controllers: password),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("forgot password"), 
+                InkWell(
+                  onTap: (){
+                    print("register");
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> SignupScreen()));
+                  },
+                  child: Text("register",style: TextStyle(color: Colors.blue),),),
+              ],
+            ),
+            SizedBox(height: 50),
+            CustomButtom(
+              title: "Login", 
+              colors: Colors.amber,
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>Routes()));
+              },
+            ), 
+            SizedBox(height: 100,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset("assets/icons/iconspng/apple.png",width: 30), 
+                SizedBox(width: 10,),
+                Image.asset("assets/icons/iconspng/email.png",width: 30,), 
+                SizedBox(width: 10,),
+                Image.asset("assets/icons/iconspng/facebook.png",width: 30,)
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
